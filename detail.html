@@ -32,13 +32,13 @@
     const selectChecked = document.getElementById('todo-filter');
 
     document.addEventListener("keydown", e => {
-        if (e.code === "Enter" && e.isComposing === false) {
-            const valueOfToDoList = document.getElementsByClassName("todo-input");
+        if (!(e.code === "Enter" && e.isComposing === false)) return;
+        const valueOfToDoList = document.getElementsByClassName("todo-input");
             const listTextNode = document.createTextNode(valueOfToDoList[0].value);
             saveToDoList(listTextNode);
             valueOfToDoList[0].value = "";
-        }
     });
+
 
     selectChecked.addEventListener("change", e => {
         const ulParent = document.getElementById("todo-list");
@@ -46,10 +46,6 @@
 
             while(liChild!==null){
                 const checkbox = liChild.querySelector('.CheckBox');
-                if (!checkbox) {
-                    liChild = liChild.nextElementSibling;
-                    continue;
-                }
                 if(e.target.value==='all'){
                     liChild.setAttribute('style','');
                 }
@@ -84,7 +80,7 @@
             else li.setAttribute('style','display:none');
         } else if (selectChecked.value === 'done') {
             if (checkbox.checked) li.setAttribute('style','display'); 
-            else li.setAttribute('style','display');
+            else li.setAttribute('style','display:none');
         }
     }
     });
@@ -134,22 +130,20 @@
 
         const inputText = document.createElement("input");
         inputText.setAttribute("type", "text");
-        inputText.setAttribute("id", "save-input");
+        inputText.setAttribute("id", "saveInput");
         buttonParent.appendChild(inputText);
 
         const buttonToSave = document.createElement("input");
         buttonToSave.setAttribute("type", "button");
         buttonToSave.setAttribute("value", "Save");
-        buttonToSave.setAttribute("data-id", currentId);
         buttonParent.appendChild(buttonToSave);
-
     }
 
     function saveEditedToDoList(e) {
 
         const buttonParent = e.target.parentNode;
-        const currentId = e.target.getAttribute("data-id");
-        const updatedText = document.getElementById("save-input").value;
+        const currentId = buttonParent.getAttribute("id");
+        const updatedText = document.getElementById("saveInput").value;
         const currentBox="box"+currentId[currentId.length-1];
 
         const list = document.getElementById(currentId);
@@ -158,8 +152,9 @@
         const listCheckBox = document.createElement("input");
         listCheckBox.setAttribute("type", "checkbox");
         listCheckBox.setAttribute("class", "CheckBox");
-        listCheckBox.setAttribute('id',currentBox);
-        if(isChecked[currentBox]===true) listCheckBox.setAttribute('checked','true') 
+        listCheckBox.setAttribute('id',`${currentBox}`);
+        if(isChecked[currentBox]===true) listCheckBox.setAttribute('checked','true');
+        else listCheckBox.setAttribute('checked','false'); 
         list.appendChild(listCheckBox);
 
         list.appendChild(document.createTextNode(updatedText));
@@ -177,3 +172,4 @@
 </script>
 
 </html>
+
