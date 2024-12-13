@@ -25,6 +25,7 @@
         </div>
     </section>
 </body>
+
 <script>
     let currentNumber = 0;
     let isChecked={};
@@ -66,10 +67,6 @@
         }
     )
 
-function hasNextSibling(node) {
-    return node.nextSibling !== null;
-}
-
     document.addEventListener("click", (e) => {
         if (e.target.value === "X") deleteToDolist(e);
         else if (e.target.value === "Edit") editToDoList(e);
@@ -98,9 +95,9 @@ function hasNextSibling(node) {
         const listCheckBox = document.createElement("input");
         listCheckBox.setAttribute('class','CheckBox');
         const currentBox="box"+currentNumber;
-        listCheckBox.setAttribute('id',currentBox);
+        listCheckBox.setAttribute();
         isChecked[currentBox]=false;
-        listCheckBox.setAttribute("type", "checkbox");
+        listCheckBox.setAttribute("type", "checkbox",'id',currentBox);
         list.appendChild(listCheckBox);
 
         list.appendChild(listTextNode);
@@ -177,6 +174,6 @@ function hasNextSibling(node) {
         buttonToDelete.setAttribute("value", "X");
         list.appendChild(buttonToDelete);
     }
-
 </script>
+
 </html>
