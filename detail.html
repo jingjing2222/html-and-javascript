@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Detail TODO List</title>
 </head>
-
 <body>
     <section id="container">
         <h1 class="title">TODO LIST</h1>
@@ -25,151 +23,6 @@
         </div>
     </section>
 </body>
-
-<script>
-    let currentNumber = 0;
-    let isChecked={};
-    const selectChecked = document.getElementById('todo-filter');
-
-    document.addEventListener("keydown", e => {
-        if (!(e.code === "Enter" && e.isComposing === false)) return;
-        const valueOfToDoList = document.getElementsByClassName("todo-input");
-            const listTextNode = document.createTextNode(valueOfToDoList[0].value);
-            saveToDoList(listTextNode);
-            valueOfToDoList[0].value = "";
-    });
-
-
-    selectChecked.addEventListener("change", e => {
-        const ulParent = document.getElementById("todo-list");
-        let liChild=ulParent.firstChild;
-
-            while(liChild!==null){
-                const checkbox = liChild.querySelector('.CheckBox');
-                if(e.target.value==='all'){
-                    liChild.setAttribute('style','');
-                }
-                else if(e.target.value==='todo'){
-                    if(!checkbox.checked) liChild.setAttribute('style','display');
-                    else liChild.setAttribute('style','display:none');
-                }
-                else if(e.target.value==='done'){
-                    if(!checkbox.checked) liChild.setAttribute('style','display:none');
-                    else liChild.setAttribute('style','');
-                }
-                if(liChild===ulParent.lastChild) break;
-                else liChild=liChild.nextElementSibling;
-            }
-        }
-    )
-
-    document.addEventListener("click", (e) => {
-        if (e.target.value === "X") deleteToDolist(e);
-        else if (e.target.value === "Edit") editToDoList(e);
-        else if (e.target.value === "Save") saveEditedToDoList(e);
-        else if (e.target.className === "CheckBox") {
-        const checkbox = e.target;
-        const li = checkbox.parentNode; 
-
-        isChecked[checkbox.id] = checkbox.checked;
-
-        if (selectChecked.value === 'all') {
-            li.setAttribute('style','display');
-        } else if (selectChecked.value === 'todo') {
-            if (!checkbox.checked) li.setAttribute('style','display');
-            else li.setAttribute('style','display:none');
-        } else if (selectChecked.value === 'done') {
-            if (checkbox.checked) li.setAttribute('style','display'); 
-            else li.setAttribute('style','display:none');
-        }
-    }
-    });
-
-    function saveToDoList(listTextNode) {
-        const todoList = document.getElementById("todo-list");
-        let list = document.createElement("li");
-        const listCheckBox = document.createElement("input");
-        listCheckBox.setAttribute('class','CheckBox');
-        const currentBox="box"+currentNumber;
-        isChecked[currentBox]=false;
-        listCheckBox.setAttribute("id", "currentbox");
-        listCheckBox.setAttribute("type", "checkbox");
-        list.appendChild(listCheckBox);
-
-        list.appendChild(listTextNode);
-
-        const buttonToAdd = document.createElement("input");
-        buttonToAdd.setAttribute("type", "button");
-        buttonToAdd.setAttribute("value", "Edit");
-        list.appendChild(buttonToAdd);
-
-        const buttonToDelete = document.createElement("input");
-        buttonToDelete.setAttribute("type", "button");
-        buttonToDelete.setAttribute("value", "X");
-
-        list.appendChild(buttonToDelete);
-
-        const currentLi = "li" + currentNumber;
-        list.setAttribute("id", currentLi);
-        todoList.appendChild(list);
-        currentNumber++;
-    }
-
-    function deleteToDolist(e) {
-        const buttonParent = e.target.parentNode;
-        buttonParent.parentNode.removeChild(buttonParent);
-        delete isChecked[e.target.parentNode.firstChild.id];
-    }
-
-    function editToDoList(e) {
-        const buttonParent = e.target.parentNode;
-        const currentText = buttonParent.childNodes[1].nodeValue;
-        const currentId = buttonParent.id;
-
-        buttonParent.innerHTML = "";
-
-        const inputText = document.createElement("input");
-        inputText.setAttribute("type", "text");
-        inputText.setAttribute("id", "saveInput");
-        buttonParent.appendChild(inputText);
-
-        const buttonToSave = document.createElement("input");
-        buttonToSave.setAttribute("type", "button");
-        buttonToSave.setAttribute("value", "Save");
-        buttonParent.appendChild(buttonToSave);
-    }
-
-    function saveEditedToDoList(e) {
-
-        const buttonParent = e.target.parentNode;
-        const currentId = buttonParent.getAttribute("id");
-        const updatedText = document.getElementById("saveInput").value;
-        const currentBox="box"+currentId[currentId.length-1];
-
-        const list = document.getElementById(currentId);
-        list.innerHTML = "";
-
-        const listCheckBox = document.createElement("input");
-        listCheckBox.setAttribute("type", "checkbox");
-        listCheckBox.setAttribute("class", "CheckBox");
-        listCheckBox.setAttribute('id',`${currentBox}`);
-        if(isChecked[currentBox]===true) listCheckBox.setAttribute('checked','true');
-        else listCheckBox.setAttribute('checked','false'); 
-        list.appendChild(listCheckBox);
-
-        list.appendChild(document.createTextNode(updatedText));
-
-        const buttonToAdd = document.createElement("input");
-        buttonToAdd.setAttribute("type", "button");
-        buttonToAdd.setAttribute("value", "Edit");
-        list.appendChild(buttonToAdd);
-
-        const buttonToDelete = document.createElement("input");
-        buttonToDelete.setAttribute("type", "button");
-        buttonToDelete.setAttribute("value", "X");
-        list.appendChild(buttonToDelete);
-    }
+<script src="de_js.js">
 </script>
-
 </html>
-
